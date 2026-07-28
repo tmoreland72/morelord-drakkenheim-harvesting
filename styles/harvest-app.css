@@ -1,0 +1,678 @@
+#morelord-drakkenheim-harvesting-app,
+.morelord-harvest-app {
+    --mlh-border: rgba(0, 0, 0, 0.35);
+    --mlh-soft-border: rgba(255, 255, 255, 0.12);
+    --mlh-panel: rgba(20, 20, 20, 0.32);
+    --mlh-panel-dark: rgba(10, 10, 10, 0.45);
+    --mlh-highlight: #b99452;
+    --mlh-success: #4fa66c;
+    --mlh-danger: #a94b4b;
+    --mlh-muted: rgba(255, 255, 255, 0.58);
+}
+
+
+/*
+ * APPLICATION WINDOW
+ */
+
+#morelord-drakkenheim-harvesting-app .window-content,
+.morelord-harvest-app .window-content {
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    min-height: 0;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-shell,
+.morelord-harvest-app .mlh-shell {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+
+/*
+ * HEADER
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-header,
+.morelord-harvest-app .mlh-header {
+    flex: 0 0 auto;
+
+    padding: 12px 16px;
+
+    border-bottom: 1px solid var(--mlh-border);
+
+    background: var(--mlh-panel-dark);
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-title,
+.morelord-harvest-app .mlh-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-title h1,
+.morelord-harvest-app .mlh-title h1 {
+    margin: 0;
+
+    font-size: 24px;
+    line-height: 1.1;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-title h1 i,
+.morelord-harvest-app .mlh-title h1 i {
+    margin-right: 6px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-scene,
+.morelord-harvest-app .mlh-scene {
+    margin-top: 3px;
+
+    font-size: 12px;
+
+    opacity: 0.7;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-refresh,
+.morelord-harvest-app .mlh-refresh {
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+
+    margin: 0;
+    padding: 0;
+}
+
+
+/*
+ * CURRENT USER
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-user,
+.morelord-harvest-app .mlh-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 8px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-user img,
+.morelord-harvest-app .mlh-user img {
+    flex: 0 0 36px;
+
+    width: 36px !important;
+    height: 36px !important;
+
+    max-width: 36px !important;
+    max-height: 36px !important;
+
+    object-fit: cover;
+
+    border: 1px solid var(--mlh-border);
+    border-radius: 50%;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-user div,
+.morelord-harvest-app .mlh-user div {
+    display: flex;
+    flex-direction: column;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-user span,
+.morelord-harvest-app .mlh-user span {
+    font-size: 11px;
+    opacity: 0.65;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-instructions,
+.morelord-harvest-app .mlh-instructions {
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    opacity: 0.78;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-summary,
+.morelord-harvest-app .mlh-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    margin-top: 8px;
+
+    font-size: 12px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-summary span,
+.morelord-harvest-app .mlh-summary span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+/*
+ * SCROLLABLE CREATURE AREA
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-creatures,
+.morelord-harvest-app .mlh-creatures {
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding: 12px;
+}
+
+
+/*
+ * CREATURE
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-creature,
+.morelord-harvest-app .mlh-creature {
+    margin: 0 0 14px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--mlh-border);
+    border-radius: 6px;
+
+    background: var(--mlh-panel);
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature:last-child,
+.morelord-harvest-app .mlh-creature:last-child {
+    margin-bottom: 0;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-header,
+.morelord-harvest-app .mlh-creature-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-height: 64px;
+
+    padding: 8px 10px;
+
+    background: var(--mlh-panel-dark);
+
+    border-bottom: 1px solid var(--mlh-border);
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-image,
+.morelord-harvest-app .mlh-creature-image {
+    flex: 0 0 52px;
+
+    width: 52px !important;
+    height: 52px !important;
+
+    min-width: 52px;
+    max-width: 52px !important;
+
+    min-height: 52px;
+    max-height: 52px !important;
+
+    object-fit: cover;
+
+    border: 1px solid var(--mlh-border);
+    border-radius: 4px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-info,
+.morelord-harvest-app .mlh-creature-info {
+    flex: 1 1 auto;
+
+    min-width: 0;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-info h2,
+.morelord-harvest-app .mlh-creature-info h2 {
+    margin: 0;
+
+    font-size: 18px;
+    line-height: 1.2;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-meta,
+.morelord-harvest-app .mlh-creature-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    opacity: 0.78;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-rarity,
+.morelord-harvest-app .mlh-rarity {
+    font-weight: 700;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-has-claim,
+.morelord-harvest-app .mlh-has-claim {
+    color: var(--mlh-success);
+}
+
+
+/*
+ * COMPONENT ROWS
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-components,
+.morelord-harvest-app .mlh-components {
+    display: flex;
+    flex-direction: column;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component,
+.morelord-harvest-app .mlh-component {
+    display: grid;
+
+    grid-template-columns:
+        42px
+        minmax(0, 1fr)
+        135px;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 56px;
+
+    padding: 7px 10px;
+
+    border-bottom:
+        1px solid var(--mlh-soft-border);
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component:last-child,
+.morelord-harvest-app .mlh-component:last-child {
+    border-bottom: 0;
+}
+
+
+/*
+ * COMPONENT IMAGE
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-component-image,
+.morelord-harvest-app .mlh-component-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    overflow: hidden;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-image img,
+.morelord-harvest-app .mlh-component-image img {
+    width: 38px !important;
+    height: 38px !important;
+
+    max-width: 38px !important;
+    max-height: 38px !important;
+
+    object-fit: cover;
+
+    border-radius: 3px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-image > i,
+.morelord-harvest-app .mlh-component-image > i {
+    font-size: 21px;
+
+    opacity: 0.45;
+}
+
+
+/*
+ * COMPONENT TEXT
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-component-body,
+.morelord-harvest-app .mlh-component-body {
+    min-width: 0;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-name,
+.morelord-harvest-app .mlh-component-name {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-category,
+.morelord-harvest-app .mlh-component-category {
+    margin-top: 2px;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+
+    opacity: 0.55;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-ingredient-name,
+.morelord-harvest-app .mlh-ingredient-name {
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    font-size: 11px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    opacity: 0.72;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-ingredient-name i,
+.morelord-harvest-app .mlh-ingredient-name i {
+    margin-right: 3px;
+
+    opacity: 0.6;
+}
+
+
+/*
+ * ACTIONS
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-component-action,
+.morelord-harvest-app .mlh-component-action {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+
+    min-width: 0;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-action button,
+.morelord-harvest-app .mlh-component-action button {
+    width: 100%;
+
+    margin: 0;
+
+    min-height: 28px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-claim,
+.morelord-harvest-app .mlh-claim {
+    font-weight: 700;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-release,
+.morelord-harvest-app .mlh-release {
+    font-size: 11px;
+}
+
+
+/*
+ * STATUS
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-claim-status,
+.morelord-harvest-app .mlh-claim-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    min-height: 28px;
+
+    padding: 4px 6px;
+
+    text-align: center;
+
+    border-radius: 3px;
+
+    font-size: 11px;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-mine,
+.morelord-harvest-app .mlh-mine {
+    color: var(--mlh-success);
+
+    font-weight: 700;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-taken,
+.morelord-harvest-app .mlh-taken {
+    opacity: 0.72;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-locked,
+#morelord-drakkenheim-harvesting-app .mlh-unavailable,
+.morelord-harvest-app .mlh-locked,
+.morelord-harvest-app .mlh-unavailable {
+    opacity: 0.45;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-mine,
+.morelord-harvest-app .mlh-component-mine {
+    box-shadow:
+        inset 3px 0 0 var(--mlh-success);
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-claimed,
+#morelord-drakkenheim-harvesting-app .mlh-component-locked,
+.morelord-harvest-app .mlh-component-claimed,
+.morelord-harvest-app .mlh-component-locked {
+    opacity: 0.62;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-component-unavailable,
+.morelord-harvest-app .mlh-component-unavailable {
+    opacity: 0.4;
+}
+
+
+/*
+ * EMPTY STATE
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-empty,
+.morelord-harvest-app .mlh-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    height: 100%;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-empty > i,
+.morelord-harvest-app .mlh-empty > i {
+    font-size: 42px;
+
+    opacity: 0.45;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-empty h2,
+.morelord-harvest-app .mlh-empty h2 {
+    margin: 0;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-empty p,
+.morelord-harvest-app .mlh-empty p {
+    margin: 0;
+
+    opacity: 0.7;
+}
+
+/*
+ * EXPAND / COLLAPSE
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-toggle,
+.morelord-harvest-app .mlh-creature-toggle {
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-toggle i,
+.morelord-harvest-app .mlh-creature-toggle i {
+    margin: 0;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-creature-collapsed,
+.morelord-harvest-app .mlh-creature-collapsed {
+    margin-bottom: 8px;
+}
+
+
+#morelord-drakkenheim-harvesting-app
+    .mlh-creature-collapsed
+    .mlh-creature-header,
+.morelord-harvest-app
+    .mlh-creature-collapsed
+    .mlh-creature-header {
+    border-bottom: 0;
+}
+
+/*
+ * FINALIZE FOOTER
+ */
+
+#morelord-drakkenheim-harvesting-app .mlh-footer,
+.morelord-harvest-app .mlh-footer {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    min-height: 48px;
+
+    padding: 8px 12px;
+
+    border-top: 1px solid var(--mlh-border);
+
+    background: var(--mlh-panel-dark);
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-footer-status,
+.morelord-harvest-app .mlh-footer-status {
+    font-size: 12px;
+
+    opacity: 0.75;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-finalized,
+.morelord-harvest-app .mlh-finalized {
+    color: var(--mlh-success);
+
+    font-weight: 700;
+
+    opacity: 1;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-finalize,
+.morelord-harvest-app .mlh-finalize {
+    flex: 0 0 auto;
+
+    width: auto;
+
+    min-width: 170px;
+
+    margin: 0;
+
+    font-weight: 700;
+}
+
+
+#morelord-drakkenheim-harvesting-app .mlh-finalize:disabled,
+.morelord-harvest-app .mlh-finalize:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.45;
+}

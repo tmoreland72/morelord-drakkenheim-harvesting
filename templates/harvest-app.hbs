@@ -1,0 +1,350 @@
+<div class="mlh-shell">
+
+    {{#unless hasSession}}
+
+    <section class="mlh-empty">
+
+        <i class="fa-solid fa-scalpel"></i>
+
+        <h2>No Active Harvest</h2>
+
+        <p>
+            There is currently no active harvesting session.
+        </p>
+
+        {{#unless isGM}}
+
+        <button type="button" data-action="refresh">
+            <i class="fa-solid fa-rotate"></i>
+            Check Again
+        </button>
+
+        {{/unless}}
+
+    </section>
+
+    {{else}}
+
+    <header class="mlh-header">
+
+        <div class="mlh-title">
+
+            <div>
+
+                <h1>
+                    <i class="fa-solid fa-scalpel"></i>
+                    Harvesting
+                </h1>
+
+                <div class="mlh-scene">
+                    {{session.sceneName}}
+                </div>
+
+            </div>
+
+            <button type="button" class="mlh-refresh" data-action="refresh" title="Refresh">
+                <i class="fa-solid fa-rotate"></i>
+            </button>
+
+        </div>
+
+
+        <div class="mlh-user">
+
+            {{#if user.characterImg}}
+
+            <img src="{{user.characterImg}}" alt="{{user.characterName}}">
+
+            {{/if}}
+
+            <div>
+
+                {{#if user.characterName}}
+
+                <strong>
+                    {{user.characterName}}
+                </strong>
+
+                <span>
+                    {{user.name}}
+                </span>
+
+                {{else}}
+
+                <strong>
+                    {{user.name}}
+                </strong>
+
+                {{/if}}
+
+            </div>
+
+        </div>
+
+
+        <div class="mlh-instructions">
+            Choose one component from each creature.
+            Once claimed, that component is unavailable to
+            the other characters.
+        </div>
+
+
+        <div class="mlh-summary">
+
+            <span>
+                <i class="fa-solid fa-skull"></i>
+                {{summary.creatures}}
+                Creatures
+            </span>
+
+            <span>
+                <i class="fa-solid fa-box-open"></i>
+                {{summary.available}}
+                Available
+            </span>
+
+            <span>
+                <i class="fa-solid fa-hand"></i>
+                {{summary.claimed}}
+                Claimed
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <main class="mlh-creatures">
+
+        {{#each creatures}}
+
+        <section class="mlh-creature {{#if isCollapsed}}mlh-creature-collapsed{{/if}}" data-creature-id="{{id}}">
+
+            <header class="mlh-creature-header">
+
+                {{#if img}}
+
+                <img class="mlh-creature-image" src="{{img}}" alt="{{actorName}}">
+
+                {{/if}}
+
+
+                <div class="mlh-creature-info">
+
+                    <h2>
+                        {{actorName}}
+                    </h2>
+
+                    <div class="mlh-creature-meta">
+
+                        <span class="mlh-rarity">
+                            {{rarity}}
+                        </span>
+
+                        <span>
+                            {{availableCount}}
+                            available
+                        </span>
+
+                        {{#if userHasClaim}}
+
+                        <span class="mlh-has-claim">
+                            <i class="fa-solid fa-check"></i>
+                            You selected one
+                        </span>
+
+                        {{/if}}
+
+                    </div>
+
+                </div>
+
+
+                <button type="button" class="mlh-creature-toggle" data-action="toggleCreature" data-creature-id="{{id}}"
+                    title="{{#if isCollapsed}}Expand{{else}}Collapse{{/if}}">
+
+                    {{#if isCollapsed}}
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                    {{else}}
+
+                    <i class="fa-solid fa-chevron-up"></i>
+
+                    {{/if}}
+
+                </button>
+
+            </header>
+
+
+            {{#unless isCollapsed}}
+
+            <div class="mlh-components">
+
+                {{#each components}}
+
+                <article class="mlh-component mlh-component-{{state}}">
+
+                    <div class="mlh-component-image">
+
+                        {{#if ingredient.img}}
+
+                        <img src="{{ingredient.img}}" alt="{{ingredient.name}}">
+
+                        {{else}}
+
+                        <i class="fa-solid fa-flask"></i>
+
+                        {{/if}}
+
+                    </div>
+
+
+                    <div class="mlh-component-body">
+
+                        <div class="mlh-component-name">
+                            {{componentName}}
+                        </div>
+
+                        <div class="mlh-component-category">
+                            {{category}}
+                            ·
+                            {{rarity}}
+                        </div>
+
+                        {{#if ingredient}}
+
+                        <div class="mlh-ingredient-name">
+                            <i class="fa-solid fa-arrow-right"></i>
+                            {{ingredient.name}}
+                        </div>
+
+                        {{/if}}
+
+                    </div>
+
+
+                    <div class="mlh-component-action">
+
+                        {{#if claimedByCurrentUser}}
+
+                        <div class="mlh-claim-status mlh-mine">
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Selected
+
+                        </div>
+
+                        <button type="button" class="mlh-release" data-action="release"
+                            data-creature-id="{{creatureId}}" data-component-id="{{id}}">
+                            Release
+                        </button>
+
+                        {{else if claimedByOther}}
+
+                        <div class="mlh-claim-status mlh-taken">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <span>
+                                Claimed by
+                                <strong>
+                                    {{claimantName}}
+                                </strong>
+                            </span>
+
+                        </div>
+
+                        {{#if canRelease}}
+
+                        <button type="button" class="mlh-release" data-action="release"
+                            data-creature-id="{{creatureId}}" data-component-id="{{id}}">
+                            GM Release
+                        </button>
+
+                        {{/if}}
+
+                        {{else if canClaim}}
+
+                        <button type="button" class="mlh-claim" data-action="claim" data-creature-id="{{creatureId}}"
+                            data-component-id="{{id}}">
+                            <i class="fa-solid fa-hand"></i>
+                            Claim
+                        </button>
+
+                        {{else if userAlreadyClaimedOther}}
+
+                        <div class="mlh-claim-status mlh-locked">
+
+                            <i class="fa-solid fa-ban"></i>
+
+                            Already selected
+
+                        </div>
+
+                        {{else}}
+
+                        <div class="mlh-claim-status mlh-unavailable">
+                            Unavailable
+                        </div>
+
+                        {{/if}}
+
+                    </div>
+
+                </article>
+
+                {{/each}}
+
+            </div>
+
+            {{/unless}}
+
+        </section>
+
+        {{/each}}
+
+    </main>
+
+    {{#if isGM}}
+
+    <footer class="mlh-footer">
+
+        <div class="mlh-footer-status">
+
+            {{#if isFinalized}}
+
+            <span class="mlh-finalized">
+                <i class="fa-solid fa-circle-check"></i>
+                Harvest Finalized
+            </span>
+
+            {{else}}
+
+            <span>
+                {{summary.claimed}} components claimed
+            </span>
+
+            {{/if}}
+
+        </div>
+
+
+        {{#unless isFinalized}}
+
+        <button type="button" class="mlh-finalize" data-action="finalize" {{#unless canFinalize}}disabled{{/unless}}>
+            <i class="fa-solid fa-box-open"></i>
+            Finalize Harvest
+        </button>
+
+        {{/unless}}
+
+    </footer>
+
+    {{/if}}
+
+    {{/unless}}
+
+</div>

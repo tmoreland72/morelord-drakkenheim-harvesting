@@ -1,0 +1,42 @@
+{
+  "id": "morelord-drakkenheim-harvesting",
+  "title": "Morelord Drakkenheim Harvesting",
+  "description": "Provides scene-based harvesting tools for Drakkenheim campaigns.",
+  "version": "0.1.0",
+  "socket": true,
+  "styles": [
+    "styles/harvest-app.css"
+  ],
+  "authors": [
+    {
+      "name": "Morelord Gaming"
+    }
+  ],
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system"
+      }
+    ],
+    "requires": [
+      {
+        "id": "drakkenheim-monsters",
+        "type": "module",
+        "reason": "Provides the Monsters of Drakkenheim compendium."
+      },
+      {
+        "id": "antics-and-rolls-drakkenheim-mastercraft",
+        "type": "module",
+        "reason": "Provides the Drakkenheim harvesting ingredient items."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.js"
+  ]
+}
