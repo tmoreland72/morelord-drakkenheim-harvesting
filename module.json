@@ -2,7 +2,7 @@
   "id": "morelord-drakkenheim-harvesting",
   "title": "Morelord Drakkenheim Harvesting",
   "description": "Provides scene-based harvesting tools for Drakkenheim campaigns.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "url": "https://github.com/tmoreland72/morelord-drakkenheim-harvesting",
   "manifest": "https://raw.githubusercontent.com/tmoreland72/morelord-drakkenheim-harvesting/main/module.json",
   "download": "https://github.com/tmoreland72/morelord-drakkenheim-harvesting/main/morelord-drakkenheim-harvesting.zip",
