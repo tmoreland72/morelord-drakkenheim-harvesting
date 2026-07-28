@@ -15,6 +15,47 @@ This module currently expects the following modules/content packs to be installe
 
 The module is designed for Foundry VTT v14.
 
+## Installation
+
+### Install from Foundry
+
+In Foundry VTT:
+
+1. Return to **Configuration and Setup**.
+2. Open **Add-on Modules**.
+3. Click **Install Module**.
+4. Paste the following URL into the **Manifest URL** field:
+
+```text
+https://raw.githubusercontent.com/tmoreland72/morelord-drakkenheim-harvesting/main/module.json
+```
+
+5. Click **Install**.
+6. After installation, open your world and enable **Morelord Drakkenheim Harvesting** under **Manage Modules**.
+
+This manifest URL is intended to remain stable. Future module updates will use the same URL, while the manifest points Foundry to the appropriate versioned GitHub Release package.
+
+### Required Modules
+
+Before using Morelord Drakkenheim Harvesting, make sure the following required content/modules are installed and enabled:
+
+- `drakkenheim-monsters`
+- `antics-and-rolls-drakkenheim-mastercraft`
+
+These dependencies provide the Drakkenheim monster data and Antics & Rolls harvesting ingredient items used by this module.
+
+### Installing an Older Version
+
+Current installations should normally use the stable manifest URL above.
+
+Older releases can be installed manually from the project's GitHub Releases page if a GM needs to return to a previous version:
+
+```text
+https://github.com/tmoreland72/morelord-drakkenheim-harvesting/releases
+```
+
+Each release contains a version-specific ZIP package.
+
 ## Current Features
 
 ### Dead Creature Scanning
