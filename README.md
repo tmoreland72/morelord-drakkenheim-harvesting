@@ -39,10 +39,12 @@ This manifest URL is intended to remain stable. Future module updates will use t
 
 Before using Morelord Drakkenheim Harvesting, make sure the following required content/modules are installed and enabled:
 
-- `drakkenheim-monsters`
-- `antics-and-rolls-drakkenheim-mastercraft`
+- `drakkenheim-monsters` — **Monsters of Drakkenheim**. This is a **paid module available through the Foundry VTT Marketplace**.
+- `antics-and-rolls-drakkenheim-mastercraft` — **Antics & Rolls Drakkenheim Mastercraft**. This module is **free as of this release**.
 
 These dependencies provide the Drakkenheim monster data and Antics & Rolls harvesting ingredient items used by this module.
+
+> Availability and pricing of third-party modules may change over time. The descriptions above reflect their status as of this release.
 
 ### Installing an Older Version
 
