@@ -324,21 +324,38 @@ Hooks.once("ready", async () => {
                     currentHarvestSession
                 );
 
-            /*
-             * Even a partial award changes session state,
-             * because successful components are marked awarded.
-             */
-            HarvestSocketService.broadcastSession(
-                currentHarvestSession
-            );
-
-            HarvestApp.refresh();
-
             if (result.success) {
+                const completionMessage =
+                    "Harvesting has been completed.";
+
+                /*
+                 * Clear and close locally first. Do not rely on the
+                 * socket server echoing the GM's own message.
+                 */
+                currentHarvestSession = null;
+
+                await HarvestApp.closeOpen();
+
                 ui.notifications.info(
-                    result.message
+                    completionMessage
                 );
+
+                HarvestSocketService
+                    .broadcastHarvestCompleted(
+                        completionMessage
+                    );
             } else {
+                /*
+                 * A partial award changes the retry-safe session state.
+                 * Keep the window open and synchronize that state.
+                 */
+                HarvestSocketService
+                    .broadcastSession(
+                        currentHarvestSession
+                    );
+
+                HarvestApp.refresh();
+
                 ui.notifications.warn(
                     result.message
                 );

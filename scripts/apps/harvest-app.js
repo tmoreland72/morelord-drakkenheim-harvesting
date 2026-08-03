@@ -794,9 +794,16 @@ export class HarvestApp extends
                 return;
             }
 
-            await api.finalizeHarvest();
+            const result =
+                await api.finalizeHarvest();
 
-            await this.render();
+            /*
+             * Successful finalization closes this application.
+             * Rendering afterward would immediately reopen it.
+             */
+            if (!result?.success) {
+                await this.render();
+            }
         } finally {
             if (
                 target.isConnected

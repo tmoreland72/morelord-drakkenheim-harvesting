@@ -41,7 +41,10 @@ export class HarvestSocketService {
                 "claim-response",
 
             SESSION_CLEARED:
-                "session-cleared"
+                "session-cleared",
+
+            HARVEST_COMPLETED:
+                "harvest-completed"
         });
 
     static #initialized =
@@ -235,6 +238,31 @@ export class HarvestSocketService {
 
         Logger.debug(
             "Broadcast that the harvest session was cleared."
+        );
+    }
+
+    /**
+     * Tell all clients that harvesting completed successfully.
+     *
+     * @param {string} message
+     */
+    static broadcastHarvestCompleted(
+        message = "Harvesting has been completed."
+    ) {
+        if (!this.isAuthoritativeGM()) {
+            Logger.warn(
+                "A non-authoritative client attempted to broadcast harvest completion."
+            );
+            return;
+        }
+
+        this.emit({
+            type: this.MESSAGE_TYPES.HARVEST_COMPLETED,
+            message
+        });
+
+        Logger.debug(
+            "Broadcast that harvesting was completed."
         );
     }
 
@@ -496,6 +524,13 @@ export class HarvestSocketService {
                 );
                 break;
 
+            case this.MESSAGE_TYPES
+                .HARVEST_COMPLETED:
+                this.#handleHarvestCompleted(
+                    message
+                );
+                break;
+
             default:
                 Logger.debug(
                     "Ignored unknown harvesting socket message:",
@@ -637,6 +672,34 @@ export class HarvestSocketService {
 
         Logger.debug(
             "Received synchronized harvest-session clear."
+        );
+    }
+
+    /**
+     * Receive a successful harvest-completion message.
+     *
+     * @param {object} message
+     */
+    static #handleHarvestCompleted(message) {
+        const activeGM = this.getActiveGM();
+
+        if (
+            !activeGM ||
+            message.senderId !== activeGM.id
+        ) {
+            return;
+        }
+
+        this.#setSession(null);
+        this.#notifySessionChanged(null);
+
+        ui.notifications.info(
+            message.message ??
+            "Harvesting has been completed."
+        );
+
+        Logger.debug(
+            "Received synchronized harvest completion."
         );
     }
 
