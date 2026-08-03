@@ -305,3 +305,4 @@ Future versions may add:
 - GM settings for claim limits
 - Optional generic ingredient fallback rules
 - Additional compatibility with third-party harvesting or inventory modules
+- Search monsters by harvestable component for GM
