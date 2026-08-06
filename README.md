@@ -328,21 +328,21 @@ Run the release script from **PowerShell** in the repository root.
 Validate and package a release without changing Git or GitHub:
 
 ```powershell
-.\release.ps1 -Version 0.2.1 -DryRun
+.\release.ps1 -Version 0.3.2 -DryRun
 ```
 
 Publish a normal release:
 
 ```powershell
-.\release.ps1 -Version 0.2.1
+.\release.ps1 -Version 0.3.2
 ```
 
 Optional release modes:
 
 ```powershell
-.\release.ps1 -Version 0.2.1 -Prerelease
-.\release.ps1 -Version 0.2.1 -Draft
-.\release.ps1 -Version 0.2.1 -CommitMessage "Release v0.2.1"
+.\release.ps1 -Version 0.3.2 -Prerelease
+.\release.ps1 -Version 0.3.2 -Draft
+.\release.ps1 -Version 0.3.2 -CommitMessage "Release v0.3.2"
 ```
 
 The script verifies the repository, branch, remote, GitHub CLI authentication, manifest, archive layout, URLs, and UTF-8 encoding. A dry run builds and validates a temporary ZIP without modifying project files, Git history, tags, or GitHub releases.

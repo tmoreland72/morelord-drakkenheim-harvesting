@@ -1,54 +1,54 @@
 {
-    "id":  "morelord-drakkenheim-harvesting",
-    "title":  "Morelord Drakkenheim Harvesting",
-    "description":  "Provides scene-based harvesting tools for Drakkenheim campaigns.",
-    "version":  "0.3.1",
-    "url":  "https://github.com/tmoreland72/morelord-drakkenheim-harvesting",
-    "manifest":  "https://raw.githubusercontent.com/tmoreland72/morelord-drakkenheim-harvesting/main/module.json",
-    "download":  "https://github.com/tmoreland72/morelord-drakkenheim-harvesting/releases/download/v0.3.1/morelord-drakkenheim-harvesting.zip",
-    "socket":  true,
-    "styles":  [
-                   "styles/harvest-app.css"
-               ],
-    "authors":  [
-                    {
-                        "name":  "Morelord Gaming"
-                    }
-                ],
-    "compatibility":  {
-                          "minimum":  "13",
-                          "verified":  "14"
-                      },
-    "relationships":  {
-                          "systems":  [
-                                          {
-                                              "id":  "dnd5e",
-                                              "type":  "system"
-                                          }
-                                      ],
-                          "requires":  [
-                                           {
-                                               "id":  "morelord-core",
-                                               "type":  "module",
-                                               "manifest":  "https://raw.githubusercontent.com/tmoreland72/morelord-core/main/module.json",
-                                               "compatibility":  {
-                                                                     "minimum":  "0.1.1"
-                                                                 },
-                                               "reason":  "Provides Morelord account connection and premium entitlement checks."
-                                           },
-                                           {
-                                               "id":  "drakkenheim-monsters",
-                                               "type":  "module",
-                                               "reason":  "Provides the Monsters of Drakkenheim compendium."
-                                           },
-                                           {
-                                               "id":  "antics-and-rolls-drakkenheim-mastercraft",
-                                               "type":  "module",
-                                               "reason":  "Provides the Drakkenheim harvesting ingredient items."
-                                           }
-                                       ]
-                      },
-    "esmodules":  [
-                      "scripts/main.js"
-                  ]
+    "id": "morelord-drakkenheim-harvesting",
+    "title": "Morelord Drakkenheim Harvesting",
+    "description": "Provides scene-based harvesting tools for Drakkenheim campaigns.",
+    "version": "0.3.2",
+    "url": "https://github.com/tmoreland72/morelord-drakkenheim-harvesting",
+    "manifest": "https://raw.githubusercontent.com/tmoreland72/morelord-drakkenheim-harvesting/main/module.json",
+    "download": "https://github.com/tmoreland72/morelord-drakkenheim-harvesting/releases/download/v0.3.2/morelord-drakkenheim-harvesting.zip",
+    "socket": true,
+    "styles": [
+        "styles/harvest-app.css"
+    ],
+    "authors": [
+        {
+            "name": "Morelord Gaming"
+        }
+    ],
+    "compatibility": {
+        "minimum": "13",
+        "verified": "14"
+    },
+    "relationships": {
+        "systems": [
+            {
+                "id": "dnd5e",
+                "type": "system"
+            }
+        ],
+        "requires": [
+            {
+                "id": "morelord-core",
+                "type": "module",
+                "manifest": "https://raw.githubusercontent.com/tmoreland72/morelord-core/main/module.json",
+                "compatibility": {
+                    "minimum": "0.1.1"
+                },
+                "reason": "Provides Morelord account connection and premium entitlement checks."
+            },
+            {
+                "id": "drakkenheim-monsters",
+                "type": "module",
+                "reason": "Provides the Monsters of Drakkenheim compendium."
+            },
+            {
+                "id": "antics-and-rolls-drakkenheim-mastercraft",
+                "type": "module",
+                "reason": "Provides the Drakkenheim harvesting ingredient items."
+            }
+        ]
+    },
+    "esmodules": [
+        "scripts/main.js"
+    ]
 }
