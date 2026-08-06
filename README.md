@@ -320,3 +320,29 @@ The free Standard workflow remains fully functional. The harvesting window opens
 Accounts with the **Collaborative Player Harvesting** feature (`drakkenheim-harvesting.player-claims`) retain the existing shared workflow. Player windows open automatically, each player claims for their own assigned character, and all claims synchronize live.
 
 The session mode is fixed when the GM creates the session. A membership change cannot alter an active harvest.
+
+## Publishing a Release
+
+Run the release script from **PowerShell** in the repository root.
+
+Validate and package a release without changing Git or GitHub:
+
+```powershell
+.\release.ps1 -Version 0.2.1 -DryRun
+```
+
+Publish a normal release:
+
+```powershell
+.\release.ps1 -Version 0.2.1
+```
+
+Optional release modes:
+
+```powershell
+.\release.ps1 -Version 0.2.1 -Prerelease
+.\release.ps1 -Version 0.2.1 -Draft
+.\release.ps1 -Version 0.2.1 -CommitMessage "Release v0.2.1"
+```
+
+The script verifies the repository, branch, remote, GitHub CLI authentication, manifest, archive layout, URLs, and UTF-8 encoding. A dry run builds and validates a temporary ZIP without modifying project files, Git history, tags, or GitHub releases.
