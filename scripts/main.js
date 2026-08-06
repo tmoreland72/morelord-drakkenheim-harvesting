@@ -792,11 +792,21 @@ async function scanCurrentScene() {
             });
         }
 
+        const collaborativeClaims =
+            await EntitlementService
+                .hasCollaborativeClaims();
+
+        const sessionMode =
+            collaborativeClaims
+                ? "collaborative"
+                : "gm-managed";
+
         currentHarvestSession =
             HarvestSession
                 .fromHarvestResults(
                     harvestResults,
-                    scene
+                    scene,
+                    sessionMode
                 );
 
         HarvestSocketService

@@ -1,5 +1,7 @@
 # Morelord Drakkenheim Harvesting
 
+Current release: **0.3.3**
+
 A Foundry VTT module for streamlining creature harvesting in **Dungeons of Drakkenheim**.
 
 Morelord Drakkenheim Harvesting scans dead NPCs on the active scene, identifies supported Drakkenheim monsters, reads their harvestable component data, matches those components to ingredient items from Antics & Rolls Drakkenheim Mastercraft, and presents a shared harvesting interface to the GM and players.
