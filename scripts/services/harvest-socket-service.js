@@ -754,6 +754,20 @@ export class HarvestSocketService {
             return result;
         }
 
+        if (
+            session.mode === "gm-managed" &&
+            message.senderId !== game.user.id
+        ) {
+            const result = {
+                success: false,
+                reason: "premium-required",
+                message: "Player claiming requires Collaborative Player Harvesting."
+            };
+
+            this.#sendResponse(message, result);
+            return result;
+        }
+
         const user =
             game.users.get(
                 message.senderId

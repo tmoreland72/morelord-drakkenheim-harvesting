@@ -17,7 +17,8 @@ export class HarvestSession {
      */
     static fromHarvestResults(
         harvestResults = [],
-        scene = canvas.scene
+        scene = canvas.scene,
+        mode = "gm-managed"
     ) {
         const creatures =
             harvestResults.map(
@@ -47,6 +48,8 @@ export class HarvestSession {
             createdBy:
                 game.user?.id ??
                 null,
+
+            mode,
 
             creatures
         });
@@ -82,6 +85,10 @@ export class HarvestSession {
 
             createdBy:
                 data.createdBy,
+
+            mode:
+                data.mode ??
+                "collaborative",
 
             updatedAt:
                 data.updatedAt,
@@ -305,6 +312,7 @@ export class HarvestSession {
         sceneName,
         createdAt,
         createdBy,
+        mode = "collaborative",
         updatedAt,
         finalizedAt,
         finalizedBy,
@@ -331,6 +339,11 @@ export class HarvestSession {
         this.createdBy =
             createdBy ??
             null;
+
+        this.mode =
+            mode === "collaborative"
+                ? "collaborative"
+                : "gm-managed";
 
         this.updatedAt =
             updatedAt ??
@@ -404,6 +417,31 @@ export class HarvestSession {
                     component.claimedBy
                         ?.userId ===
                     userId
+            ) ??
+            null
+        );
+    }
+
+
+    getActorClaimForCreature(
+        creatureId,
+        actorId
+    ) {
+        const creature =
+            this.getCreature(
+                creatureId
+            );
+
+        if (!creature || !actorId) {
+            return null;
+        }
+
+        return (
+            creature.components.find(
+                (component) =>
+                    component.claimedBy
+                        ?.actorId ===
+                    actorId
             ) ??
             null
         );
@@ -486,10 +524,14 @@ export class HarvestSession {
             };
         }
 
+        const sameClaimant =
+            this.mode === "gm-managed"
+                ? component.claimedBy?.actorId === actorId
+                : component.claimedBy?.userId === userId;
+
         if (
             component.claimedBy &&
-            component.claimedBy.userId !==
-                userId
+            !sameClaimant
         ) {
             return {
                 success: false,
@@ -499,11 +541,27 @@ export class HarvestSession {
             };
         }
 
+        if (
+            this.mode === "gm-managed" &&
+            !actorId
+        ) {
+            return {
+                success: false,
+                reason: "missing-character",
+                message: "Select a character before claiming a component."
+            };
+        }
+
         const existingClaim =
-            this.getUserClaimForCreature(
-                creatureId,
-                userId
-            );
+            this.mode === "gm-managed"
+                ? this.getActorClaimForCreature(
+                    creatureId,
+                    actorId
+                )
+                : this.getUserClaimForCreature(
+                    creatureId,
+                    userId
+                );
 
         if (
             existingClaim &&
@@ -514,7 +572,7 @@ export class HarvestSession {
                 success: false,
                 reason: "user-already-claimed",
                 message:
-                    `You have already claimed ${existingClaim.componentName} from ${creature.actorName}.`
+                    `${actorName ?? "This character"} has already claimed ${existingClaim.componentName} from ${creature.actorName}.`
             };
         }
 
@@ -787,6 +845,9 @@ export class HarvestSession {
             sceneName:
                 this.sceneName,
 
+            mode:
+                this.mode,
+
             creatures:
                 this.creatures.length,
 
@@ -838,6 +899,9 @@ export class HarvestSession {
 
             createdBy:
                 this.createdBy,
+
+            mode:
+                this.mode,
 
             updatedAt:
                 this.updatedAt,

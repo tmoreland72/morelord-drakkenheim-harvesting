@@ -49,6 +49,32 @@
         </div>
 
 
+        {{#if isGmManaged}}
+
+        <div class="mlh-gm-managed">
+            <div class="mlh-mode-heading">
+                <i class="fa-solid fa-user-shield"></i>
+                GM-Managed Harvesting
+            </div>
+
+            <label>
+                <span>Claim for character</span>
+                <select data-role="claim-actor">
+                    {{#each claimActors}}
+                    <option value="{{id}}" {{#if selected}}selected{{/if}}>
+                        {{name}}
+                    </option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <p>
+                Select a character, then use the existing Claim buttons to assign components to them.
+            </p>
+        </div>
+
+        {{else}}
+
         <div class="mlh-user">
 
             {{#if user.characterImg}}
@@ -81,11 +107,17 @@
 
         </div>
 
+        {{/if}}
+
 
         <div class="mlh-instructions">
+            {{#if isGmManaged}}
+            Assign up to one component from each creature to each character.
+            {{else}}
             Choose one component from each creature.
             Once claimed, that component is unavailable to
             the other characters.
+            {{/if}}
         </div>
 
 
@@ -150,7 +182,11 @@
 
                         <span class="mlh-has-claim">
                             <i class="fa-solid fa-check"></i>
+                            {{#if ../../isGmManaged}}
+                            Selected character has one
+                            {{else}}
                             You selected one
+                            {{/if}}
                         </span>
 
                         {{/if}}
@@ -233,7 +269,7 @@
 
                             <i class="fa-solid fa-check"></i>
 
-                            Selected
+                            {{#if ../../isGmManaged}}Assigned{{else}}Selected{{/if}}
 
                         </div>
 

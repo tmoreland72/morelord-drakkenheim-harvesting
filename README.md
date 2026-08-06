@@ -10,6 +10,7 @@ The goal is to turn the harvesting process from a manual lookup-and-drag workflo
 
 This module currently expects the following modules/content packs to be installed and enabled:
 
+- `morelord-core`
 - `drakkenheim-monsters`
 - `antics-and-rolls-drakkenheim-mastercraft`
 
@@ -306,3 +307,16 @@ Future versions may add:
 - Optional generic ingredient fallback rules
 - Additional compatibility with third-party harvesting or inventory modules
 - Search monsters by harvestable component for GM
+
+
+## Standard and Premium Harvesting
+
+### Standard: GM-Managed Harvesting
+
+The free Standard workflow remains fully functional. The harvesting window opens for the GM, who selects a character from the single selector at the top and then uses the normal Claim buttons to assign components to that character. Each character may receive one component from each creature.
+
+### Premium: Collaborative Player Harvesting
+
+Accounts with the **Collaborative Player Harvesting** feature (`drakkenheim-harvesting.player-claims`) retain the existing shared workflow. Player windows open automatically, each player claims for their own assigned character, and all claims synchronize live.
+
+The session mode is fixed when the GM creates the session. A membership change cannot alter an active harvest.

@@ -94,6 +94,12 @@ export class HarvestApp extends
 
 
     /**
+     * Character selected by the GM for GM-managed claims.
+     */
+    #selectedActorId = null;
+
+
+    /**
      * Return the currently managed application instance.
      *
      * @returns {HarvestApp}
@@ -217,6 +223,24 @@ export class HarvestApp extends
             scrollElement.scrollTop =
                 this.#savedScrollTop;
         }
+
+        const actorSelect =
+            this.element?.querySelector(
+                "[data-role='claim-actor']"
+            );
+
+        if (actorSelect) {
+            actorSelect.addEventListener(
+                "change",
+                (event) => {
+                    this.#selectedActorId =
+                        event.currentTarget.value ||
+                        null;
+
+                    void this.render();
+                }
+            );
+        }
     }
 
 
@@ -263,12 +287,48 @@ export class HarvestApp extends
         const userContext =
             this.#getUserContext();
 
+        const isGmManaged =
+            session.mode === "gm-managed";
+
+        const claimActors =
+            isGmManaged && game.user.isGM
+                ? this.#getClaimActors()
+                : [];
+
+        if (
+            isGmManaged &&
+            !claimActors.some(
+                (actor) => actor.id === this.#selectedActorId
+            )
+        ) {
+            this.#selectedActorId =
+                claimActors[0]?.id ??
+                null;
+        }
+
+        const selectedActor =
+            this.#selectedActorId
+                ? game.actors.get(this.#selectedActorId)
+                : null;
+
+        const claimContext = {
+            ...userContext,
+            identityId:
+                isGmManaged
+                    ? selectedActor?.id ?? null
+                    : userContext.id,
+            identityType:
+                isGmManaged
+                    ? "actor"
+                    : "user"
+        };
+
         const creatures =
             session.creatures.map(
                 (creature) =>
                     this.#prepareCreature(
                         creature,
-                        userContext
+                        claimContext
                     )
             );
 
@@ -295,7 +355,10 @@ export class HarvestApp extends
                     session.createdAt,
 
                 updatedAt:
-                    session.updatedAt
+                    session.updatedAt,
+
+                mode:
+                    session.mode
             },
 
             summary,
@@ -305,6 +368,23 @@ export class HarvestApp extends
             user: userContext,
 
             isGM: game.user.isGM,
+
+            isCollaborative:
+                session.mode === "collaborative",
+
+            isGmManaged,
+
+            claimActors:
+                claimActors.map((actor) => ({
+                    id: actor.id,
+                    name: actor.name,
+                    img: actor.img,
+                    selected: actor.id === this.#selectedActorId
+                })),
+
+            selectedActorName:
+                selectedActor?.name ??
+                null,
 
             hasClaims: summary.claimed > 0,
 
@@ -353,6 +433,18 @@ export class HarvestApp extends
 
 
     /**
+     * Return eligible character Actors for GM-managed harvesting.
+     *
+     * @returns {Actor[]}
+     */
+    #getClaimActors() {
+        return game.actors
+            .filter((actor) => actor.type === "character")
+            .sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+
+    /**
      * Prepare one creature for rendering.
      *
      * @param {object} creature
@@ -366,9 +458,11 @@ export class HarvestApp extends
         const userClaim =
             creature.components.find(
                 (component) =>
-                    component.claimedBy
-                        ?.userId ===
-                    userContext.id
+                    (
+                        userContext.identityType === "actor"
+                            ? component.claimedBy?.actorId === userContext.identityId
+                            : component.claimedBy?.userId === userContext.identityId
+                    )
             ) ??
             null;
 
@@ -439,9 +533,9 @@ export class HarvestApp extends
             );
 
         const claimedByCurrentUser =
-            component.claimedBy
-                ?.userId ===
-            userContext.id;
+            userContext.identityType === "actor"
+                ? component.claimedBy?.actorId === userContext.identityId
+                : component.claimedBy?.userId === userContext.identityId;
 
         const claimedByOther =
             isClaimed &&
@@ -615,16 +709,48 @@ export class HarvestApp extends
                 return;
             }
 
+            const session =
+                api.getHarvestSession?.();
+
+            const selectedActor =
+                session?.mode === "gm-managed"
+                    ? game.actors.get(this.#selectedActorId)
+                    : null;
+
+            if (
+                session?.mode === "gm-managed" &&
+                !selectedActor
+            ) {
+                ui.notifications.warn(
+                    "Select a character before claiming a component."
+                );
+
+                return;
+            }
+
             const result =
                 await api.claimComponent({
                     creatureId,
-                    componentId
+                    componentId,
+                    actorId:
+                        selectedActor?.id ??
+                        game.user.character?.id ??
+                        null,
+                    actorName:
+                        selectedActor?.name ??
+                        game.user.character?.name ??
+                        null
                 });
 
-            if (result?.success) {
+            if (
+                result?.success &&
+                session?.mode === "collaborative"
+            ) {
                 /*
-                 * Automatically collapse the creature once this
-                 * player has successfully chosen a component.
+                 * Collaborative users are finished with this creature
+                 * after choosing their one component. In GM-managed
+                 * mode the creature remains open so the GM can assign
+                 * components to additional characters.
                  */
                 this.#collapsedCreatures.add(
                     creatureId

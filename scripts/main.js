@@ -33,6 +33,10 @@ import {
     HarvestApp
 } from "./apps/harvest-app.js";
 
+import {
+    EntitlementService
+} from "./services/entitlement-service.js";
+
 
 let currentHarvestSession = null;
 
@@ -122,7 +126,14 @@ Hooks.once("ready", async () => {
             );
 
             if (session) {
-                void HarvestApp.open();
+                if (
+                    session.mode === "collaborative" ||
+                    game.user.isGM
+                ) {
+                    void HarvestApp.open();
+                } else {
+                    void HarvestApp.closeOpen();
+                }
             } else {
                 void HarvestApp.closeOpen();
             }
@@ -200,11 +211,21 @@ Hooks.once("ready", async () => {
                 return null;
             }
 
+            const collaborativeClaims =
+                await EntitlementService
+                    .hasCollaborativeClaims();
+
+            const sessionMode =
+                collaborativeClaims
+                    ? "collaborative"
+                    : "gm-managed";
+
             currentHarvestSession =
                 HarvestSession
                     .fromHarvestResults(
                         harvestResults,
-                        scene
+                        scene,
+                        sessionMode
                     );
 
             HarvestSocketService
@@ -229,7 +250,7 @@ Hooks.once("ready", async () => {
             );
 
             ui.notifications.info(
-                `Harvest session created with ${summary.creatures} creature${summary.creatures === 1
+                `${sessionMode === "collaborative" ? "Collaborative" : "GM-managed"} harvest session created with ${summary.creatures} creature${summary.creatures === 1
                     ? ""
                     : "s"
                 } and ${summary.available} available component${summary.available === 1

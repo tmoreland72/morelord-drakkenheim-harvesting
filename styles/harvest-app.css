@@ -676,3 +676,44 @@
 
     opacity: 0.45;
 }
+
+/* GM-managed Standard workflow */
+#morelord-drakkenheim-harvesting-app .mlh-gm-managed,
+.morelord-harvest-app .mlh-gm-managed {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--mlh-soft-border);
+    border-radius: 6px;
+    background: var(--mlh-panel);
+}
+
+#morelord-drakkenheim-harvesting-app .mlh-mode-heading,
+.morelord-harvest-app .mlh-mode-heading {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--mlh-highlight);
+}
+
+#morelord-drakkenheim-harvesting-app .mlh-gm-managed label,
+.morelord-harvest-app .mlh-gm-managed label {
+    display: grid;
+    grid-template-columns: max-content minmax(220px, 1fr);
+    align-items: center;
+    gap: 10px;
+}
+
+#morelord-drakkenheim-harvesting-app .mlh-gm-managed select,
+.morelord-harvest-app .mlh-gm-managed select {
+    width: 100%;
+    margin: 0;
+}
+
+#morelord-drakkenheim-harvesting-app .mlh-gm-managed p,
+.morelord-harvest-app .mlh-gm-managed p {
+    margin: 7px 0 0;
+    font-size: 11px;
+    opacity: 0.72;
+}
