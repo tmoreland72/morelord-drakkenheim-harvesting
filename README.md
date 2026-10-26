@@ -1,6 +1,6 @@
 # Morelord Drakkenheim Harvesting
 
-Current release: **0.3.3**
+Current release: **0.4.0**
 
 A Foundry VTT module for streamlining creature harvesting in **Dungeons of Drakkenheim**.
 
@@ -12,7 +12,7 @@ The goal is to turn the harvesting process from a manual lookup-and-drag workflo
 
 This module currently expects the following modules/content packs to be installed and enabled:
 
-- `morelord-core`
+- `morelord-core` 0.6.0 or newer
 - `drakkenheim-monsters`
 - `antics-and-rolls-drakkenheim-mastercraft`
 

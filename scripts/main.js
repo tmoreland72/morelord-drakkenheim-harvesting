@@ -46,51 +46,29 @@ Hooks.once("init", () => {
 });
 
 
-Hooks.on("getSceneControlButtons", (controls) => {
-    if (!game.user.isGM) {
-        return;
-    }
+/*
+ * Morelord Core 0.6.0 places this in the Morelord Tools control,
+ * immediately after Craftworks. Older or missing core keeps the
+ * Token-palette button.
+ */
+addMorelordTool({
+    id:
+        "morelord-drakkenheim-harvesting",
 
-    const tokenControls =
-        controls.tokens;
+    title:
+        "Harvest Dead Creatures",
 
-    if (!tokenControls) {
-        Logger.warn(
-            "Token Controls group was not found."
-        );
+    icon:
+        "fa-solid fa-scalpel",
 
-        return;
-    }
+    order:
+        31,
 
-    tokenControls.tools ??= {};
+    visible: () =>
+        game.user.isGM,
 
-    tokenControls.tools.morelordDrakkenheimHarvest = {
-        name:
-            "morelordDrakkenheimHarvest",
-
-        title:
-            "Harvest Dead Creatures",
-
-        icon:
-            "fa-solid fa-scalpel",
-
-        order:
-            100,
-
-        button:
-            true,
-
-        visible:
-            true,
-
-        onChange: () => {
-            void scanCurrentScene();
-        }
-    };
-
-    Logger.debug(
-        "Registered Harvest Dead Creatures scene-control button."
-    );
+    onClick: () =>
+        scanCurrentScene()
 });
 
 
@@ -996,6 +974,193 @@ async function scanCurrentScene() {
 
         return null;
     }
+}
+
+
+const MORELORD_CORE_TOOLS_VERSION = "0.6.0";
+
+const LEGACY_HARVEST_TOOL_KEY =
+    "morelordDrakkenheimHarvest";
+
+
+/**
+ * Register a Morelord tool with core when its tools API is available.
+ *
+ * Falls back to the legacy Token-palette button when Morelord Core
+ * is absent or older than 0.6.0.
+ *
+ * @param {{
+ *   id: string,
+ *   title: string,
+ *   icon: string,
+ *   order: number,
+ *   visible: () => boolean,
+ *   onClick: (event?: Event) => unknown
+ * }} def
+ */
+function addMorelordTool(def) {
+    let registered = false;
+
+    const legacyListener = (controls) => {
+        registerLegacyHarvestButton(
+            controls,
+            def
+        );
+    };
+
+    const useCoreTools = (tools) => {
+        if (
+            !supportsMorelordTools(tools)
+        ) {
+            return false;
+        }
+
+        tools.register(def);
+
+        if (!registered) {
+            Hooks.off(
+                "getSceneControlButtons",
+                legacyListener
+            );
+
+            registered = true;
+
+            Logger.debug(
+                "Registered Harvest Dead Creatures with Morelord Tools."
+            );
+        }
+
+        return true;
+    };
+
+    Hooks.once(
+        "morelord-core.registerTools",
+        (tools) => {
+            useCoreTools(tools);
+        }
+    );
+
+    Hooks.once("setup", () => {
+        const tools =
+            game.modules.get(
+                "morelord-core"
+            )?.api?.tools
+            ?? globalThis.MorelordCore
+                ?.tools;
+
+        if (useCoreTools(tools)) {
+            return;
+        }
+
+        Hooks.on(
+            "getSceneControlButtons",
+            legacyListener
+        );
+
+        Logger.debug(
+            "Morelord Core tools API is unavailable. Using the Token palette harvest button."
+        );
+    });
+}
+
+
+/**
+ * Core exposes api.tools from 0.6.0. An older core, or no core,
+ * must keep the Token-palette button.
+ *
+ * @param {{ register?: Function } | null | undefined} tools
+ * @returns {boolean}
+ */
+function supportsMorelordTools(tools) {
+    if (
+        typeof tools?.register !==
+        "function"
+    ) {
+        return false;
+    }
+
+    const version =
+        game.modules.get(
+            "morelord-core"
+        )?.version;
+
+    if (!version) {
+        return true;
+    }
+
+    try {
+        return !foundry.utils
+            .isNewerVersion(
+                MORELORD_CORE_TOOLS_VERSION,
+                version
+            );
+    } catch (error) {
+        Logger.warn(
+            "Could not compare the Morelord Core version. Using the Token palette harvest button.",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/**
+ * Write the pre-0.6.0 Token-palette harvest button.
+ *
+ * @param {Record<string, object>} controls
+ * @param {{ title: string, icon: string, onClick: () => unknown }} def
+ */
+function registerLegacyHarvestButton(
+    controls,
+    def
+) {
+    if (!game.user.isGM) {
+        return;
+    }
+
+    const tokenControls =
+        controls.tokens;
+
+    if (!tokenControls) {
+        Logger.warn(
+            "Token Controls group was not found."
+        );
+
+        return;
+    }
+
+    tokenControls.tools ??= {};
+
+    tokenControls.tools[
+        LEGACY_HARVEST_TOOL_KEY
+    ] = {
+        name:
+            LEGACY_HARVEST_TOOL_KEY,
+
+        title:
+            def.title,
+
+        icon:
+            def.icon,
+
+        order:
+            100,
+
+        button:
+            true,
+
+        visible:
+            true,
+
+        onChange: () => {
+            void def.onClick();
+        }
+    };
+
+    Logger.debug(
+        "Registered Harvest Dead Creatures scene-control button."
+    );
 }
 
 
